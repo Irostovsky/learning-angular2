@@ -1,44 +1,70 @@
+import { DoCheck, KeyValueDiffer, KeyValueDiffers, ElementRef, Renderer } from '@angular/core';
 /**
- * @license
- * Copyright Google Inc. All Rights Reserved.
+ * The `NgStyle` directive changes styles based on a result of expression evaluation.
  *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-import { DoCheck, ElementRef, KeyValueDiffers, Renderer } from '@angular/core';
-/**
- * @ngModule CommonModule
+ * An expression assigned to the `ngStyle` property must evaluate to an object and the
+ * corresponding element styles are updated based on changes to this object. Style names to update
+ * are taken from the object's keys, and values - from the corresponding object's values.
  *
- * @whatItDoes Update an HTML element styles.
+ * ### Syntax
  *
- * @howToUse
+ * - `<div [ngStyle]="{'font-style': style}"></div>`
+ * - `<div [ngStyle]="styleExp"></div>` - here the `styleExp` must evaluate to an object
+ *
+ * ### Example ([live demo](http://plnkr.co/edit/YamGS6GkUh9GqWNQhCyM?p=preview)):
+ *
  * ```
- * <some-element [ngStyle]="{'font-style': styleExp}">...</some-element>
+ * import {Component} from '@angular/core';
+ * import {NgStyle} from '@angular/common';
  *
- * <some-element [ngStyle]="{'max-width.px': widthExp}">...</some-element>
+ * @Component({
+ *  selector: 'ngStyle-example',
+ *  template: `
+ *    <h1 [ngStyle]="{'font-style': style, 'font-size': size, 'font-weight': weight}">
+ *      Change style of this text!
+ *    </h1>
  *
- * <some-element [ngStyle]="objExp">...</some-element>
+ *    <hr>
+ *
+ *    <label>Italic: <input type="checkbox" (change)="changeStyle($event)"></label>
+ *    <label>Bold: <input type="checkbox" (change)="changeWeight($event)"></label>
+ *    <label>Size: <input type="text" [value]="size" (change)="size = $event.target.value"></label>
+ *  `,
+ *  directives: [NgStyle]
+ * })
+ * export class NgStyleExample {
+ *    style = 'normal';
+ *    weight = 'normal';
+ *    size = '20px';
+ *
+ *    changeStyle($event: any) {
+ *      this.style = $event.target.checked ? 'italic' : 'normal';
+ *    }
+ *
+ *    changeWeight($event: any) {
+ *      this.weight = $event.target.checked ? 'bold' : 'normal';
+ *    }
+ * }
  * ```
  *
- * @description
- *
- * The styles are updated according to the value of the expression evaluation:
- * - keys are style names with an optional `.<unit>` suffix (ie 'top.px', 'font-style.em'),
- * - values are the values assigned to those properties (expressed in the given unit).
- *
- * @stable
+ * In this example the `font-style`, `font-size` and `font-weight` styles will be updated
+ * based on the `style` property's value changes.
  */
 export declare class NgStyle implements DoCheck {
     private _differs;
     private _ngEl;
     private _renderer;
-    private _ngStyle;
-    private _differ;
+    /** @internal */
+    _rawStyle: {
+        [key: string]: string;
+    };
+    /** @internal */
+    _differ: KeyValueDiffer;
     constructor(_differs: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
-    ngStyle: {
+    rawStyle: {
         [key: string]: string;
     };
     ngDoCheck(): void;
     private _applyChanges(changes);
-    private _setStyle(nameAndUnit, value);
+    private _setStyle(name, val);
 }

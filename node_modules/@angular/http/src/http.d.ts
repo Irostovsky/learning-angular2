@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs/Observable';
-import { RequestOptions } from './base_request_options';
-import { ConnectionBackend, RequestOptionsArgs } from './interfaces';
+import { RequestOptionsArgs, ConnectionBackend } from './interfaces';
 import { Request } from './static_request';
 import { Response } from './static_response';
+import { RequestOptions } from './base_request_options';
+import { Observable } from 'rxjs/Observable';
 /**
  * Performs http requests using `XMLHttpRequest` as the default backend.
  *
@@ -14,7 +14,6 @@ import { Response } from './static_response';
  *
  * ```typescript
  * import {Http, HTTP_PROVIDERS} from '@angular/http';
- * import 'rxjs/add/operator/map'
  * @Component({
  *   selector: 'http-app',
  *   viewProviders: [HTTP_PROVIDERS],
@@ -36,7 +35,7 @@ import { Response } from './static_response';
  * ### Example
  *
  * ```
- * http.get('people.json').subscribe((res:Response) => this.people = res.json());
+ * http.get('people.json').observer({next: (value) => this.people = value});
  * ```
  *
  * The default construct used to perform requests, `XMLHttpRequest`, is abstracted as a "Backend" (
@@ -51,18 +50,17 @@ import { Response } from './static_response';
  * var injector = Injector.resolveAndCreate([
  *   BaseRequestOptions,
  *   MockBackend,
- *   {provide: Http, useFactory:
+ *   provide(Http, {useFactory:
  *       function(backend, defaultOptions) {
  *         return new Http(backend, defaultOptions);
  *       },
- *       deps: [MockBackend, BaseRequestOptions]}
+ *       deps: [MockBackend, BaseRequestOptions]})
  * ]);
  * var http = injector.get(Http);
  * http.get('request-from-mock-backend.json').subscribe((res:Response) => doSomething(res));
  * ```
  *
- * @experimental
- */
+ **/
 export declare class Http {
     protected _backend: ConnectionBackend;
     protected _defaultOptions: RequestOptions;
@@ -81,11 +79,11 @@ export declare class Http {
     /**
      * Performs a request with `post` http method.
      */
-    post(url: string, body: any, options?: RequestOptionsArgs): Observable<Response>;
+    post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
     /**
      * Performs a request with `put` http method.
      */
-    put(url: string, body: any, options?: RequestOptionsArgs): Observable<Response>;
+    put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
     /**
      * Performs a request with `delete` http method.
      */
@@ -93,19 +91,12 @@ export declare class Http {
     /**
      * Performs a request with `patch` http method.
      */
-    patch(url: string, body: any, options?: RequestOptionsArgs): Observable<Response>;
+    patch(url: string, body: string, options?: RequestOptionsArgs): Observable<Response>;
     /**
      * Performs a request with `head` http method.
      */
     head(url: string, options?: RequestOptionsArgs): Observable<Response>;
-    /**
-     * Performs a request with `options` http method.
-     */
-    options(url: string, options?: RequestOptionsArgs): Observable<Response>;
 }
-/**
- * @experimental
- */
 export declare class Jsonp extends Http {
     constructor(backend: ConnectionBackend, defaultOptions: RequestOptions);
     /**
@@ -113,14 +104,6 @@ export declare class Jsonp extends Http {
      * a {@link Request} instance. If the first argument is a url, an optional {@link RequestOptions}
      * object can be provided as the 2nd argument. The options object will be merged with the values
      * of {@link BaseRequestOptions} before performing the request.
-     *
-     * @security Regular XHR is the safest alternative to JSONP for most applications, and is
-     * supported by all current browsers. Because JSONP creates a `<script>` element with
-     * contents retrieved from a remote source, attacker-controlled data introduced by an untrusted
-     * source could expose your application to XSS risks. Data exposed by JSONP may also be
-     * readable by malicious third-party websites. In addition, JSONP introduces potential risk for
-     * future security issues (e.g. content sniffing).  For more detail, see the
-     * [Security Guide](http://g.co/ng/security).
      */
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response>;
 }

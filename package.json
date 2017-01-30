@@ -1,36 +1,46 @@
 {
-  "name": "learning-angular2",
+  "name": "chapter_01",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "typings": "typings",
-    "postinstall": "typings install"
-  },
+  "description": "Chapter 1 - Creating our first component in Angular 2",
+  "main": "pomodoro-timer.js",
+  "keywords": [],
+  "author": "Pablo Deeleman",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Irostovsky/learning-angular2.git"
+    "url": "git://github.com/deeleman/learning-angular2.git"
   },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Irostovsky/learning-angular2/issues"
+  "scripts": {
+    "preinstall": "rm -rf ./built",
+    "postinstall": "npm run typings install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "lite": "lite-server",
+    "prestart": "tsc",
+    "start": "concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "typings": "typings"
   },
-  "homepage": "https://github.com/Irostovsky/learning-angular2#readme",
   "dependencies": {
-    "@angular/common": "^2.4.5",
-    "@angular/compiler": "^2.4.5",
-    "@angular/core": "^2.4.5",
-    "@angular/http": "^2.4.5",
-    "@angular/platform-browser": "^2.4.5",
-    "@angular/platform-browser-dynamic": "^2.4.5",
-    "@angular/router-deprecated": "^2.0.0-rc.2",
-    "bootstrap": "^3.3.7",
-    "es6-shim": "^0.35.3",
-    "reflect-metadata": "^0.1.9",
-    "rxjs": "^5.0.3",
-    "systemjs": "^0.20.3",
-    "zone.js": "^0.7.6"
+    "@angular/common":  "2.0.0-rc.1",
+    "@angular/compiler":  "2.0.0-rc.1",
+    "@angular/core":  "2.0.0-rc.1",
+    "@angular/http":  "2.0.0-rc.1",
+    "@angular/platform-browser":  "2.0.0-rc.1",
+    "@angular/platform-browser-dynamic":  "2.0.0-rc.1",
+    "@angular/router":  "2.0.0-rc.1",
+    "@angular/router-deprecated":  "2.0.0-rc.1",
+
+    "bootstrap": "^3.3.6",
+
+    "systemjs": "0.19.26",
+    "es6-shim": "^0.35.0",
+    "reflect-metadata": "0.1.2",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "0.6.12"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.1.0",
+    "typescript": "1.8.10",
+    "typings": "0.8.1"
   }
 }

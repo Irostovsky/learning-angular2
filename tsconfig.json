@@ -10,7 +10,7 @@
         "outDir": "built",
         "rootDir": "."
     },
-    "exclude": {
+    "exclude": [
       "node_modules"
-    }
+    ]
 }

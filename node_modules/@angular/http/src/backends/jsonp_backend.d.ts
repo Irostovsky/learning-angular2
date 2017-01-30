@@ -1,14 +1,12 @@
-import { Observable } from 'rxjs/Observable';
-import { ResponseOptions } from '../base_response_options';
+import { ConnectionBackend, Connection } from '../interfaces';
 import { ReadyState } from '../enums';
-import { Connection, ConnectionBackend } from '../interfaces';
 import { Request } from '../static_request';
 import { Response } from '../static_response';
+import { ResponseOptions } from '../base_response_options';
 import { BrowserJsonp } from './browser_jsonp';
+import { Observable } from 'rxjs/Observable';
 /**
  * Abstract base class for an in-flight JSONP request.
- *
- * @experimental
  */
 export declare abstract class JSONPConnection implements Connection {
     /**
@@ -41,8 +39,6 @@ export declare class JSONPConnection_ extends JSONPConnection {
 }
 /**
  * A {@link ConnectionBackend} that uses the JSONP strategy of making requests.
- *
- * @experimental
  */
 export declare abstract class JSONPBackend extends ConnectionBackend {
 }

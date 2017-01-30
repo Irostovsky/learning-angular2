@@ -1,40 +1,64 @@
+import { DoCheck, OnDestroy, ElementRef, IterableDiffers, KeyValueDiffers, Renderer } from '@angular/core';
 /**
- * @license
- * Copyright Google Inc. All Rights Reserved.
+ * The `NgClass` directive conditionally adds and removes CSS classes on an HTML element based on
+ * an expression's evaluation result.
  *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-import { DoCheck, ElementRef, IterableDiffers, KeyValueDiffers, Renderer } from '@angular/core';
-/**
- * @ngModule CommonModule
+ * The result of an expression evaluation is interpreted differently depending on type of
+ * the expression evaluation result:
+ * - `string` - all the CSS classes listed in a string (space delimited) are added
+ * - `Array` - all the CSS classes (Array elements) are added
+ * - `Object` - each key corresponds to a CSS class name while values are interpreted as expressions
+ * evaluating to `Boolean`. If a given expression evaluates to `true` a corresponding CSS class
+ * is added - otherwise it is removed.
  *
- * @whatItDoes Adds and removes CSS classes on an HTML element.
+ * While the `NgClass` directive can interpret expressions evaluating to `string`, `Array`
+ * or `Object`, the `Object`-based version is the most often used and has an advantage of keeping
+ * all the CSS class names in a template.
  *
- * @howToUse
+ * ### Example ([live demo](http://plnkr.co/edit/a4YdtmWywhJ33uqfpPPn?p=preview)):
+ *
  * ```
- *     <some-element [ngClass]="'first second'">...</some-element>
+ * import {Component} from '@angular/core';
+ * import {NgClass} from '@angular/common';
  *
- *     <some-element [ngClass]="['first', 'second']">...</some-element>
+ * @Component({
+ *   selector: 'toggle-button',
+ *   inputs: ['isDisabled'],
+ *   template: `
+ *      <div class="button" [ngClass]="{active: isOn, disabled: isDisabled}"
+ *          (click)="toggle(!isOn)">
+ *          Click me!
+ *      </div>`,
+ *   styles: [`
+ *     .button {
+ *       width: 120px;
+ *       border: medium solid black;
+ *     }
  *
- *     <some-element [ngClass]="{'first': true, 'second': true, 'third': false}">...</some-element>
+ *     .active {
+ *       background-color: red;
+ *    }
  *
- *     <some-element [ngClass]="stringExp|arrayExp|objExp">...</some-element>
+ *     .disabled {
+ *       color: gray;
+ *       border: medium solid gray;
+ *     }
+ *   `]
+ *   directives: [NgClass]
+ * })
+ * class ToggleButton {
+ *   isOn = false;
+ *   isDisabled = false;
  *
- *     <some-element [ngClass]="{'class1 class2 class3' : true}">...</some-element>
+ *   toggle(newState) {
+ *     if (!this.isDisabled) {
+ *       this.isOn = newState;
+ *     }
+ *   }
+ * }
  * ```
- *
- * @description
- *
- * The CSS classes are updated as follows, depending on the type of the expression evaluation:
- * - `string` - the CSS classes listed in the string (space delimited) are added,
- * - `Array` - the CSS classes declared as Array elements are added,
- * - `Object` - keys are CSS classes that get added when the expression given in the value
- *              evaluates to a truthy value, otherwise they are removed.
- *
- * @stable
  */
-export declare class NgClass implements DoCheck {
+export declare class NgClass implements DoCheck, OnDestroy {
     private _iterableDiffers;
     private _keyValueDiffers;
     private _ngEl;
@@ -44,15 +68,16 @@ export declare class NgClass implements DoCheck {
     private _initialClasses;
     private _rawClass;
     constructor(_iterableDiffers: IterableDiffers, _keyValueDiffers: KeyValueDiffers, _ngEl: ElementRef, _renderer: Renderer);
-    klass: string;
-    ngClass: string | string[] | Set<string> | {
-        [klass: string]: any;
+    initialClasses: string;
+    rawClass: string | string[] | Set<string> | {
+        [key: string]: any;
     };
     ngDoCheck(): void;
+    ngOnDestroy(): void;
     private _cleanupClasses(rawClassVal);
     private _applyKeyValueChanges(changes);
     private _applyIterableChanges(changes);
     private _applyInitialClasses(isCleanup);
     private _applyClasses(rawClassVal, isCleanup);
-    private _toggleClass(klass, enabled);
+    private _toggleClass(className, enabled);
 }

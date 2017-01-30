@@ -1,16 +1,9 @@
-/**
- * @license
- * Copyright Google Inc. All Rights Reserved.
- *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
- */
-import { WtfScopeFn } from './wtf_impl';
 export { WtfScopeFn } from './wtf_impl';
+import * as impl from './wtf_impl';
 /**
  * True if WTF is enabled.
  */
-export declare const wtfEnabled: boolean;
+export declare var wtfEnabled: boolean;
 /**
  * Create trace scope.
  *
@@ -39,9 +32,8 @@ export declare const wtfEnabled: boolean;
  * needs to be fixed before the app should be profiled. Add try-finally only when you expect that
  * an exception is expected during normal execution while profiling.
  *
- * @experimental
  */
-export declare const wtfCreateScope: (signature: string, flags?: any) => WtfScopeFn;
+export declare var wtfCreateScope: (signature: string, flags?: any) => impl.WtfScopeFn;
 /**
  * Used to mark end of Scope.
  *
@@ -49,9 +41,8 @@ export declare const wtfCreateScope: (signature: string, flags?: any) => WtfScop
  * - `returnValue` (optional) to be passed to the WTF.
  *
  * Returns the `returnValue for easy chaining.
- * @experimental
  */
-export declare const wtfLeave: <T>(scope: any, returnValue?: T) => T;
+export declare var wtfLeave: <T>(scope: any, returnValue?: T) => T;
 /**
  * Used to mark Async start. Async are similar to scope but they don't have to be strictly nested.
  * The return value is used in the call to [endAsync]. Async ranges only work if WTF has been
@@ -63,13 +54,11 @@ export declare const wtfLeave: <T>(scope: any, returnValue?: T) => T;
  *          wtfEndTimeRange(s);
  *        });
  *     }
- * @experimental
  */
-export declare const wtfStartTimeRange: (rangeType: string, action: string) => any;
+export declare var wtfStartTimeRange: (rangeType: string, action: string) => any;
 /**
  * Ends a async time range operation.
  * [range] is the return value from [wtfStartTimeRange] Async ranges only work if WTF has been
  * enabled.
- * @experimental
  */
-export declare const wtfEndTimeRange: (range: any) => void;
+export declare var wtfEndTimeRange: (range: any) => void;

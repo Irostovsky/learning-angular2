@@ -1,39 +1,61 @@
+import { PlatformLocation, UrlChangeListener } from './platform_location';
 import { LocationStrategy } from './location_strategy';
-import { LocationChangeListener, PlatformLocation } from './platform_location';
 /**
- * @whatItDoes Use URL for storing application location data.
- * @description
  * `PathLocationStrategy` is a {@link LocationStrategy} used to configure the
  * {@link Location} service to represent its state in the
  * [path](https://en.wikipedia.org/wiki/Uniform_Resource_Locator#Syntax) of the
  * browser's URL.
  *
- * If you're using `PathLocationStrategy`, you must provide a {@link APP_BASE_HREF}
- * or add a base element to the document. This URL prefix that will be preserved
- * when generating and recognizing URLs.
+ * `PathLocationStrategy` is the default binding for {@link LocationStrategy}
+ * provided in {@link ROUTER_PROVIDERS}.
+ *
+ * If you're using `PathLocationStrategy`, you must provide a provider for
+ * {@link APP_BASE_HREF} to a string representing the URL prefix that should
+ * be preserved when generating and recognizing URLs.
  *
  * For instance, if you provide an `APP_BASE_HREF` of `'/my/app'` and call
  * `location.go('/foo')`, the browser's URL will become
  * `example.com/my/app/foo`.
  *
- * Similarly, if you add `<base href='/my/app'/>` to the document and call
- * `location.go('/foo')`, the browser's URL will become
- * `example.com/my/app/foo`.
- *
  * ### Example
  *
- * {@example common/location/ts/path_location_component.ts region='LocationComponent'}
+ * ```
+ * import {Component, provide} from '@angular/core';
+ * import {bootstrap} from '@angular/platform-browser/browser';
+ * import {
+ *   Location,
+ *   APP_BASE_HREF
+ * } from '@angular/common';
+ * import {
+ *   ROUTER_DIRECTIVES,
+ *   ROUTER_PROVIDERS,
+ *   RouteConfig
+ * } from '@angular/router';
  *
- * @stable
+ * @Component({directives: [ROUTER_DIRECTIVES]})
+ * @RouteConfig([
+ *  {...},
+ * ])
+ * class AppCmp {
+ *   constructor(location: Location) {
+ *     location.go('/foo');
+ *   }
+ * }
+ *
+ * bootstrap(AppCmp, [
+ *   ROUTER_PROVIDERS, // includes binding to PathLocationStrategy
+ *   provide(APP_BASE_HREF, {useValue: '/my/app'})
+ * ]);
+ * ```
  */
 export declare class PathLocationStrategy extends LocationStrategy {
     private _platformLocation;
     private _baseHref;
     constructor(_platformLocation: PlatformLocation, href?: string);
-    onPopState(fn: LocationChangeListener): void;
+    onPopState(fn: UrlChangeListener): void;
     getBaseHref(): string;
     prepareExternalUrl(internal: string): string;
-    path(includeHash?: boolean): string;
+    path(): string;
     pushState(state: any, title: string, url: string, queryParams: string): void;
     replaceState(state: any, title: string, url: string, queryParams: string): void;
     forward(): void;

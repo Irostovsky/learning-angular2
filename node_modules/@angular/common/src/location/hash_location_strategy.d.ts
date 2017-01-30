@@ -1,8 +1,6 @@
 import { LocationStrategy } from './location_strategy';
-import { LocationChangeListener, PlatformLocation } from './platform_location';
+import { UrlChangeListener, PlatformLocation } from './platform_location';
 /**
- * @whatItDoes Use URL hash for storing application location data.
- * @description
  * `HashLocationStrategy` is a {@link LocationStrategy} used to configure the
  * {@link Location} service to represent its state in the
  * [hash fragment](https://en.wikipedia.org/wiki/Uniform_Resource_Locator#Syntax)
@@ -13,17 +11,42 @@ import { LocationChangeListener, PlatformLocation } from './platform_location';
  *
  * ### Example
  *
- * {@example common/location/ts/hash_location_component.ts region='LocationComponent'}
+ * ```
+ * import {Component, provide} from '@angular/core';
+ * import {
+ *   Location,
+ *   LocationStrategy,
+ *   HashLocationStrategy
+ * } from '@angular/common';
+ * import {
+ *   ROUTER_DIRECTIVES,
+ *   ROUTER_PROVIDERS,
+ *   RouteConfig
+ * } from '@angular/router';
  *
- * @stable
+ * @Component({directives: [ROUTER_DIRECTIVES]})
+ * @RouteConfig([
+ *  {...},
+ * ])
+ * class AppCmp {
+ *   constructor(location: Location) {
+ *     location.go('/foo');
+ *   }
+ * }
+ *
+ * bootstrap(AppCmp, [
+ *   ROUTER_PROVIDERS,
+ *   provide(LocationStrategy, {useClass: HashLocationStrategy})
+ * ]);
+ * ```
  */
 export declare class HashLocationStrategy extends LocationStrategy {
     private _platformLocation;
     private _baseHref;
     constructor(_platformLocation: PlatformLocation, _baseHref?: string);
-    onPopState(fn: LocationChangeListener): void;
+    onPopState(fn: UrlChangeListener): void;
     getBaseHref(): string;
-    path(includeHash?: boolean): string;
+    path(): string;
     prepareExternalUrl(internal: string): string;
     pushState(state: any, title: string, path: string, queryParams: string): void;
     replaceState(state: any, title: string, path: string, queryParams: string): void;
