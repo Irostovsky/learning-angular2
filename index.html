@@ -12,10 +12,11 @@
 
     <script src="systemjs.config.js"></script>
     <script>
-      System.import('built/hello-angular')
+      System.import('built/pomodoro-timer')
+      .then(null, console.error.bind(console))
     </script>
   </head>
   <body>
-    <hello-angular></hello-angular>
+    <pomodoro-timer></pomodoro-timer>
   </body>
 </html>
