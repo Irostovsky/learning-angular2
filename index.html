@@ -15,8 +15,17 @@
       System.import('built/pomodoro-timer')
       .then(null, console.error.bind(console))
     </script>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   </head>
   <body>
+    <nav class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <strong class="navbar-brand">My Pomodoro Timer</strong>
+        </div>
+      </div>
+    </nav>
+
     <pomodoro-timer></pomodoro-timer>
   </body>
 </html>
