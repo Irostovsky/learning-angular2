@@ -1,55 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 
 @Component({
-  selector: 'pomodoro-timer',
-  template: `
-    <div class='text-center'>
-      <img src='assets/img/pomodoro.png' alt='Pomodoro'>
-      <h1>{{minutes}}:{{seconds | number: '2.0'}}</h1>
-      <p>
-        <button (click)='togglePause()'>
-          {{buttonLabel}}
-        </button>
-      </p>
-    </div>
-  `
+  selector: 'countdown',
+  template: '<h1>Time left </h1>'
 })
-class PomodoroTimerComponent {
-  minutes: number;
-  seconds: number;
-  isPaused: boolean
-  buttonLabel: string
+class CountdownComponent {
+  @Input() seconds: number;
+  intervalId: number;
+  @Output() complete: EventEmitter<any> = new EventEmitter();
   constructor(){
-    this.resetPomodoro()
-    setInterval(() => this.tick(), 1000)
-  }
-
-  resetPomodoro(): void{
-    this.minutes = 24
-    this.seconds = 59
-    this.buttonLabel = 'Start'
-    this.togglePause()
+    this.intervalId = setInterval(() => this.tick(), 1000)
   }
 
   private tick(): void{
-    if(!this.isPaused) {
-      this.buttonLabel = 'Pause'
-
-      if(--this.seconds < 0){
-        this.seconds = 59
-        if(--this.minutes < 0){
-          this.resetPomodoro()
-        }
-      }
+    if(--this.seconds < 1){
+      clearInterval(this.intervalId)
+      this.complete.emit(null)
     }
   }
 
-  togglePause(): void{
-    this.isPaused = !this.isPaused
-    if(this.minutes < 24 || this.seconds < 59){
-      this.buttonLabel = this.isPaused ? 'Resume' : 'Pause'
-    }
+}
+
+@Component({
+  selector: 'pomodoro-timer',
+  directives: [CountdownComponent],
+  template: `
+    <div class="container text-center">
+      <img src='assets/img/pomodoro.png' />
+      <countdown [seconds]="25"
+        (complete)='onCountdownCompleted()'></countdown>
+    </div>
+    `
+})
+class PomodoroTimerComponent{
+  onCountdownCompleted(): void{
+    alert('Time up!')
   }
 }
 
