@@ -9,6 +9,7 @@ class CountdownComponent {
   @Input() seconds: number;
   intervalId: number;
   @Output() complete: EventEmitter<any> = new EventEmitter();
+  @Output() progress: EventEmitter<number> = new EventEmitter();
   constructor(){
     this.intervalId = setInterval(() => this.tick(), 1000)
   }
@@ -18,6 +19,7 @@ class CountdownComponent {
       clearInterval(this.intervalId)
       this.complete.emit(null)
     }
+    this.progress.emit(this.seconds)
   }
 
 }
@@ -29,7 +31,13 @@ class CountdownComponent {
     <div class="container text-center">
       <img src='assets/img/pomodoro.png' />
       <countdown [seconds]="25"
-        (complete)='onCountdownCompleted()'></countdown>
+        (progress)='timeout = $event'
+        (complete)='onCountdownCompleted()'>
+      </countdown>
+      <strong>{{timeout}}</strong>
+      <p *ngIf="timeout < 10">
+        Only <strong>{{timeout}}</strong>
+      </p>
     </div>
     `
 })
