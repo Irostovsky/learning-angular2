@@ -31,12 +31,19 @@ class CountdownComponent {
     <div class="container text-center">
       <img src='assets/img/pomodoro.png' />
       <countdown [seconds]="25"
-        (progress)='timeout = $event'
-        (complete)='onCountdownCompleted()'>
+        (complete)='onCountdownCompleted()'
+        #counter>
       </countdown>
-      <strong>{{timeout}}</strong>
-      <p *ngIf="timeout < 10">
-        Only <strong>{{timeout}}</strong>
+      <p>
+        <button
+          class='btn btn-default'
+          (click)="counter.seconds = 25">
+          Reset countdown to 25 seconds
+        </button>
+      </p>
+      <strong>{{counter.seconds}}</strong>
+      <p *ngIf="counter.seconds < 10">
+        Only <strong>{{counter.seconds}}</strong>
       </p>
     </div>
     `
