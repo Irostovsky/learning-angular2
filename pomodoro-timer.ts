@@ -27,26 +27,7 @@ class CountdownComponent {
 @Component({
   selector: 'pomodoro-timer',
   directives: [CountdownComponent],
-  template: `
-    <div class="container text-center">
-      <img src='assets/img/pomodoro.png' />
-      <countdown [seconds]="25"
-        (complete)='onCountdownCompleted()'
-        #counter>
-      </countdown>
-      <p>
-        <button
-          class='btn btn-default'
-          (click)="counter.seconds = 25">
-          Reset countdown to 25 seconds
-        </button>
-      </p>
-      <strong>{{counter.seconds}}</strong>
-      <p *ngIf="counter.seconds < 10">
-        Only <strong>{{counter.seconds}}</strong>
-      </p>
-    </div>
-    `
+  templateUrl: 'pomodoro-timer.html'
 })
 class PomodoroTimerComponent{
   onCountdownCompleted(): void{
