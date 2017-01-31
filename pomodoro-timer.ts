@@ -1,9 +1,11 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 
 @Component({
   selector: 'countdown',
-  template: '<h1>Time left </h1>'
+  template: '<h1>Time left </h1>',
+  styles: ['h1{color: #900}'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 class CountdownComponent {
   @Input() seconds: number;
